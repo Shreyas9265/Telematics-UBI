@@ -1,0 +1,1 @@
+Model goal, data, features, algorithms (GLM baseline, calibrated GBM), metrics (AUC/Brier), limitations, and responsible AI notes.

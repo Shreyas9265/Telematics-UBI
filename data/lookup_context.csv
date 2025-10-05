@@ -1,0 +1,2 @@
+driver_id,ts,lat,lon,speed_kph,accel_mps2,brake_mps2,heading_deg,odometer_km,phone_use,road_type,weather_code,hard_brake
+D_000,2025-10-04T18:09:02.017013+00:00,43.003655,-78.784564,112.42,0.55,-0.36,24.7,14629.87,0,highway,CLR,0

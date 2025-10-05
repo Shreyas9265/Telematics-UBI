@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+pandas
+numpy
+scikit-learn
+joblib
+streamlit
+requests
+SQLAlchemy>=2.0
+psycopg2-binary>=2.9

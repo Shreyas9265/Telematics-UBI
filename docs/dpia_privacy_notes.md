@@ -1,0 +1,1 @@
+DPIA checklist: purpose, lawful basis, minimization, storage limits, transparency, security; pseudonymous driver_id; no PII.
