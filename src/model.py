@@ -4,7 +4,10 @@ from sklearn.calibration import CalibratedClassifierCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, brier_score_loss, log_loss
 from sklearn.model_selection import StratifiedKFold
-from .features import to_features, RISK_FEATURES
+import sys, os
+sys.path.append(os.path.dirname(__file__))  # add current folder to path
+from features import to_features, RISK_FEATURES
+
 
 def synthesize_labels(df):
     import numpy as np

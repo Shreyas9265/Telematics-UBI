@@ -701,7 +701,7 @@
 # #     else:
 # #         st.info("Premium scenarios require a current score/price — ingest events first.")
 
-# src/dashboard.py-----------final but no deploy
+# src/dashboard.py-----------final but no deplo
 import os, json, random
 from datetime import datetime
 
@@ -720,7 +720,7 @@ def _api_base() -> str:
     try:
         return st.secrets["API_BASE"]  # raises if secrets are absent
     except Exception:
-        return "https://telematics-ubi.onrender.com/"
+        return "http://127.0.0.1:8000"
 
 #API = _api_base()
 
@@ -749,11 +749,11 @@ st.title("Telematics UBI – Driver Dashboard")
 # -----------------------------
 # Helpers
 # -----------------------------
-# def api_get(path, **kwargs):
-#     return requests.get(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
+def api_get(path, **kwargs):
+    return requests.get(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
 
-# def api_post(path, **kwargs):
-#     return requests.post(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
+def api_post(path, **kwargs):
+    return requests.post(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
 
 def refresh_health_banner():
     """Fetch health and paint banner + update counters."""
