@@ -701,7 +701,7 @@
 # #     else:
 # #         st.info("Premium scenarios require a current score/price — ingest events first.")
 
-# src/dashboard.py
+# src/dashboard.py-----------final but no deploy
 import os, json, random
 from datetime import datetime
 
@@ -720,9 +720,18 @@ def _api_base() -> str:
     try:
         return st.secrets["API_BASE"]  # raises if secrets are absent
     except Exception:
-        return "http://127.0.0.1:8000"
+        return "https://telematics-ubi.onrender.com/"
 
-API = _api_base()
+#API = _api_base()
+
+API = _api_base()  # which resolves to localhost
+
+def api_get(path, **kwargs):
+    return requests.get(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
+
+def api_post(path, **kwargs):
+    return requests.post(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
+
 
 # Optional: where the sample events file lives
 def _events_path() -> str:
@@ -740,11 +749,11 @@ st.title("Telematics UBI – Driver Dashboard")
 # -----------------------------
 # Helpers
 # -----------------------------
-def api_get(path, **kwargs):
-    return requests.get(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
+# def api_get(path, **kwargs):
+#     return requests.get(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
 
-def api_post(path, **kwargs):
-    return requests.post(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
+# def api_post(path, **kwargs):
+#     return requests.post(f"{API}{path}", timeout=kwargs.pop("timeout", 10), **kwargs)
 
 def refresh_health_banner():
     """Fetch health and paint banner + update counters."""
@@ -943,7 +952,7 @@ refresh_health_banner()
 driver_id = st.text_input("Driver ID", "D_000")
 base_premium = st.number_input("Base Premium ($/mo)", min_value=0.0, value=120.0, step=1.0)
 
-tabs = st.tabs(["Overview", "Events", "Features", "Required", "Suggestions"])
+tabs = st.tabs(["Overview", "Events", "Features", "Behaviour", "Suggestions"])
 
 # -----------------------------
 # OVERVIEW
@@ -954,7 +963,7 @@ with tabs[0]:
         load_sample_events(500)
     if c2.button("Refresh", key="refresh_overview"):
         refresh_health_banner()
-
+    st.subheader("Behavior, Scores & Premium Changes")
     kpis = fetch_kpis(driver_id, base_premium)
     if "message" in kpis:
         st.info(kpis["message"])
@@ -963,6 +972,7 @@ with tabs[0]:
         a.metric("Risk Score", int(round(kpis["risk_score"])))
         b.metric("Incident Probability", f"{kpis['prob_incident']*100:.2f}%")
         c.metric("Estimated Premium", f"${kpis['premium']:.1f}")
+    
 
 # -----------------------------
 # EVENTS
@@ -990,7 +1000,7 @@ with tabs[2]:
 # REQUIRED (mirror KPIs so reviewers see them exactly where asked)
 # -----------------------------
 with tabs[3]:
-    st.subheader("Required: Behavior, Scores & Premium Changes")
+    st.subheader("Behavior, Scores & Premium Changes")
 
     # 1) Summary cards
     kpis = fetch_kpis(driver_id, base_premium)
@@ -1046,13 +1056,14 @@ with tabs[3]:
     st.divider()
 
     # 3) Trends from events (if any)
-    st.markdown("### Recent Trends")
-    # You already display events in Events tab, consider using similar logic
-    # or implement fetch_events helper if you want to present a summary
+    st.subheader("Personalized Suggestions")
+    feats = fetch_features(driver_id)
+    kpis = fetch_kpis(driver_id, base_premium)
+    risk = None if "message" in kpis else kpis.get("risk_score")
+    tips = generate_suggestions(feats or {}, risk)
+    for t in tips:
+        st.write(f"• {t}")
 
-    st.info("No events to plot trends yet (please implement this based on your event retrieval logic).")
-
-    st.divider()
 
     # 4) Premium scenarios
     st.markdown("### Premium Scenarios")
