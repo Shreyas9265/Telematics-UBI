@@ -366,3 +366,17 @@ def price(req: PriceReq):
         "premium": premium,
         "prob_incident": prob,
     }
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "https://telematics-ubi.onrender.com",
+    "http://localhost:8501",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
