@@ -1,5 +1,8 @@
 # 🚗 Telematics UBI — Driver Dashboard & API
 
+**🔴 Live API:** https://telematics-ubi-api.vercel.app/docs · redeploy with `vercel/deploy.sh`. The Streamlit dashboard (`src/dashboard.py`) runs on Streamlit Community Cloud with the secret `API_BASE = "https://telematics-ubi-api.vercel.app"`.
+
+
 This project is a **local-first implementation** of a telematics-based **Usage-Based Insurance (UBI)** system that leverages real or simulated driving behavior data to predict driver risk and compute personalized insurance premiums.
 
 ---
