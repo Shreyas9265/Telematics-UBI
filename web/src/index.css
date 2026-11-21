@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/* Layout: one 1240px column. Hero with the base-premium control, KPI tiles, the fleet
+   (score distribution + pricing curve), then a master/detail of drivers, the GPS map,
+   and how the scoring works. Amber is the brand; blue is reserved for data marks. */
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --surface-2: #f8f7f3;
+  --chart-surface: #fcfcfb;
+  --ink: #15130f;
+  --muted: #55524b;
+  --faint: #807c73;
+  --line: #e4e1d8;
+  --brand: #b45309;
+  --brand-ink: #ffffff;
+  --brand-soft: #fbecd7;
+  --s1: #2a78d6;
+  /* sequential blue ramp (validated reference palette) for speed on the map */
+  --q1: #b7d3f6; --q2: #86b6ef; --q3: #5598e7; --q4: #2a78d6; --q5: #1c5cab; --q6: #104281;
+  --warning: #fab219; --serious: #ec835a; --critical: #d03b3b; --good: #0ca30c;
+  --f-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --f-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f0f0e; --surface: #1a1a19; --surface-2: #151514; --chart-surface: #1a1a19;
+    --ink: #f0efec; --muted: #c3c2b7; --faint: #8f8e87; --line: #2e2d2a;
+    --brand: #f59e0b; --brand-ink: #1c1203; --brand-soft: #3a2a10; --s1: #3987e5;
+    --q1: #184f95; --q2: #1c5cab; --q3: #256abf; --q4: #3987e5; --q5: #6da7ec; --q6: #b7d3f6;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f0f0e; --surface: #1a1a19; --surface-2: #151514; --chart-surface: #1a1a19;
+  --ink: #f0efec; --muted: #c3c2b7; --faint: #8f8e87; --line: #2e2d2a;
+  --brand: #f59e0b; --brand-ink: #1c1203; --brand-soft: #3a2a10; --s1: #3987e5;
+  --q1: #184f95; --q2: #1c5cab; --q3: #256abf; --q4: #3987e5; --q5: #6da7ec; --q6: #b7d3f6;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
+  --color-critical: var(--critical);
+  --font-display: var(--f-display);
+  --font-body: var(--f-body);
+  --font-mono: var(--f-mono);
+}
+
+@layer base {
+  body { background: var(--bg); color: var(--ink); font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: var(--f-display); }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 6px; }
+  .num { font-variant-numeric: tabular-nums; }
+}
+
+@layer components {
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+  .eyebrow { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; border-radius: 10px; padding: 9px 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; text-decoration: none; transition: border-color .15s; }
+  .btn:hover { border-color: var(--ink); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); }
+  .wrap { max-width: 1240px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  @media (min-width: 768px) { .wrap { padding-left: max(28px, env(safe-area-inset-left)); padding-right: max(28px, env(safe-area-inset-right)); } }
+  input[type="range"] { accent-color: var(--brand); }
+}
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }

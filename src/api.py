@@ -772,3 +772,9 @@ def compute_price(req: PriceReq):
 def root():
     return {"message": "Telematics UBI API running", "events_in_memory": len(EVENTS)}
 
+
+
+# Fleet summary for the web dashboard (see src/fleet.py)
+from .fleet import router as fleet_router  # noqa: E402
+
+app.include_router(fleet_router)
